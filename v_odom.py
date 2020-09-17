@@ -28,7 +28,8 @@ rot_universal = np.eye(3)
 trans_universal = np.zeros((3,1))
 
 frame_old = cv2.imread(os.path.join(path, "000000.png"))
-for x in range(1,len(glob.glob(os.path.join(path,"*png")))):
+# for x in range(1,len(glob.glob(os.path.join(path,"*png")))):
+for x in range(70,250):
     print(x)
     kp_old, des_old, coords_old = sift.features(frame_old, coord=True)
     frame_new = cv2.imread(os.path.join(path, str(x).zfill(6)+".png"))
@@ -48,14 +49,14 @@ for x in range(1,len(glob.glob(os.path.join(path,"*png")))):
     draw_x, draw_y = int(trans_universal[0])+500, int(trans_universal[2])+500
     cv2.circle(traj, (draw_x, draw_y) ,1, (255,255,255), 2)
     
-    # cv2.imshow("current frame", frame_new)
+    cv2.imshow("current frame", frame_new)
     cv2.imshow("trajectory", traj)
     cv2.circle(traj, (draw_x, draw_y) ,1, (0,0,255), 2);     
     
     if cv2.waitKey(1) & 0xFF == 27:
         break 
 cv2.destroyAllWindows()
-cv2.imwrite("trajectory.jpg", traj) 
+cv2.imwrite("test.jpg", traj) 
 
 
 
