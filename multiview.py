@@ -29,7 +29,7 @@ class MultiView():
             points[:,2] = points[:,2]/points[:,3]
             return np.array([points[:,0], points[:,1], points[:,2]]).T
         
-    def transform(self,data,transformation):
+    def transform(self,data,transformation): ## Transformation for 3-dim space
         '''
         Parameters
         ----------
@@ -55,6 +55,17 @@ class MultiView():
     
     def vector_magnitude(self,vec):
         return np.sqrt(np.sum(vec*vec))
+    
+    def get_proj_matrix(self,K,R=np.eye(3),t=np.zeros([3,1])): ## P = KR[I3 - X0]
+        KR = np.dot(K,R)
+        X0 = np.dot(KR, t)
+        return np.hstack([KR, X0])
+    
+    def triangulate(self,points1, points2, P1, P2):
+        pointclouds = cv2.triangulatePoints(P1, P2, points1.T, points2.T).T
+        pointclouds = self.euclidian(pointclouds)
+        return pointclouds
+        
         
         
         

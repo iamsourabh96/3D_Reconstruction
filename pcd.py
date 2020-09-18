@@ -25,7 +25,7 @@ class PCD():
         -------
         None.
         '''
-        mesh_frame = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.2, origin=[0, 0, 0])
+        mesh_frame = o3d.geometry.TriangleMesh.create_coordinate_frame(size=5, origin=[0, 0, 0])
         for x in range(len(data)):    
             if str(type(data[x])) == "<class 'numpy.ndarray'>" :
                  data[x] = self.np2pcd(data[x])                 
@@ -61,6 +61,21 @@ class PCD():
         transformed_data = data.transform(transformation)
         return transformed_data  
         
+    
+    def filtr(self,pcd,x_limit=(-40,40),y_limit=(-40,10),z_limit=(0,100)):
+        x_min, x_max = x_limit
+        y_min, y_max = y_limit
+        z_min, z_max = z_limit               
+        if not str(type(pcd)) == "<class 'numpy.ndarray'>" :
+            pcd = self.pcd2np(pcd)              
+        pcd = pcd[pcd[:,0]>=x_min]   ## Filter
+        pcd = pcd[pcd[:,0]<=x_max]
+        pcd = pcd[pcd[:,1]>=y_min]   
+        pcd = pcd[pcd[:,1]<=y_max]
+        pcd = pcd[pcd[:,2]>=z_min]   
+        pcd = pcd[pcd[:,2]<=z_max]        
+        return pcd
+
 
 
         
