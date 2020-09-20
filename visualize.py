@@ -11,6 +11,7 @@ import os
 import multiview
 import pcd
 import matplotlib.pyplot as plt
+from line_mesh import LineMesh
 
 class Visualize():
     
@@ -23,12 +24,10 @@ class Visualize():
         trajectory = (trajectory_history[:,0]*3).reshape(-1,1)
         trajectory = np.hstack([trajectory, (trajectory_history[:,2]*3).reshape(-1,1)])
         trajectory = (np.int_(trajectory))//3
-        min_horiz = min(trajectory[:,0])
-        max_horiz = max(trajectory[:,0])
-        min_vertical = min(trajectory[:,1])
-        max_vertical = max(trajectory[:,1])
+        min_horiz, max_horiz = min(trajectory[:,0]), max(trajectory[:,0])
+        min_vertical, max_vertical = min(trajectory[:,1]), max(trajectory[:,1])
         trajectory_plot = np.zeros((abs(min_vertical)+abs(max_vertical)+50,abs(min_horiz)+abs(max_horiz)+50,3))
-        trajectory[:,0] += abs(min_horiz)+25
+        trajectory[:,0] += abs(min_horiz)+25 
         trajectory[:,1] += abs(min_vertical)+25
         trajectory_plot[trajectory[:,1],trajectory[:,0]] = 255
         kernel = np.ones((thickness,thickness),np.uint8)
@@ -42,6 +41,23 @@ class Visualize():
             # plt.pause(0.1)
             return
         cv2.imwrite(os.path.join(path,"trajectory.jpg"), trajectory_plot)
+        
+        
+    def traj_3d(self,points,color=[1,0,0]):
+        lines=self.generate_lines(points)
+        colors = [color for i in range(len(lines))]
+        line_mesh = LineMesh(points, lines, colors, radius=0.1)
+        line_mesh_geoms = line_mesh.cylinder_segments
+        return line_mesh_geoms 
+    
+    def generate_lines(self,points):
+        lines = []
+        for x in range(len(points)-1):
+            lines.append([x,x+1])
+        return lines
+            
+        
+        
         
         
 

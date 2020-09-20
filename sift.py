@@ -64,7 +64,7 @@ class SIFT():
             matches = sorted(matches, key = lambda x:x.distance)
             return matches       
     
-    def find_correspondances(self,frame1,frame2,matcher="knn",matches=-1,show=False):
+    def find_correspondences(self,frame1,frame2,matcher="knn",matches=-1,show=False):
         '''        
         Parameters
         ----------
@@ -74,7 +74,7 @@ class SIFT():
             DESCRIPTION. The default is "knn".
             knn --> K-nearest neighbours (preferred)
             bf --> Brute Force matcher            
-        matches : no of matches to return (sorted: strongest to weakest)
+        matches : number of matches to return (sorted: strongest to weakest)
             DESCRIPTION. The default is -1 --> returns all matches.
             Number should be provided. Eg: 100 --> for first 100 matches
         show : displays correspondances on both images

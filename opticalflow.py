@@ -22,11 +22,9 @@ class Track():
                   maxLevel = 3,
                   criteria = (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 30, 0.03))
         p1, st, err = cv2.calcOpticalFlowPyrLK(frame0_gray, frame1_gray, p0, None, **lk_params)        
-        good0 = p0[st==1]
-        good1 = p1[st==1]        
+        good0, good1 = p0[st==1], p1[st==1]     
         if show:
-            temp_frame0 = frame0.copy() 
-            temp_frame1 = frame1.copy()
+            temp_frame0, temp_frame1 = frame0.copy(), frame1.copy()
             for x in range(len(good0)):
                 cv2.circle(temp_frame0, (int(good0[x,0]), int(good0[x,1])), 1, (0, 0, 255), -1)
                 cv2.circle(temp_frame1, (int(good1[x,0]), int(good1[x,1])), 1, (0, 0, 255), -1)
@@ -39,4 +37,3 @@ class Track():
         cv2.imshow("image",img)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
-        

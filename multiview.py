@@ -65,13 +65,3 @@ class MultiView():
         pointclouds = cv2.triangulatePoints(P1, P2, points1.T, points2.T).T
         pointclouds = self.euclidian(pointclouds)
         return pointclouds
-        
-        
-        
-        
-
-
-        
-    
-    
-    

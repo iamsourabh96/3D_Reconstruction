@@ -25,7 +25,7 @@ class PCD():
         -------
         None.
         '''
-        mesh_frame = o3d.geometry.TriangleMesh.create_coordinate_frame(size=5, origin=[0, 0, 0])
+        mesh_frame = o3d.geometry.TriangleMesh.create_coordinate_frame(size=3, origin=[0, 0, 0])
         for x in range(len(data)):    
             if str(type(data[x])) == "<class 'numpy.ndarray'>" :
                  data[x] = self.np2pcd(data[x])                 
@@ -62,38 +62,22 @@ class PCD():
         return transformed_data  
         
     
-    def filtr(self,pcd,x_limit=(-40,40),y_limit=(-40,10),z_limit=(0,100)):
+    def filtr(self,pcd,x_limit=(-3,3),y_limit=(-5,5),z_limit=(0,5),inclusive=True): ## Filters pointcloud given limits in x,y,z direction
         x_min, x_max = x_limit
         y_min, y_max = y_limit
         z_min, z_max = z_limit               
         if not str(type(pcd)) == "<class 'numpy.ndarray'>" :
-            pcd = self.pcd2np(pcd)              
-        pcd = pcd[pcd[:,0]>=x_min]   ## Filter
-        pcd = pcd[pcd[:,0]<=x_max]
-        pcd = pcd[pcd[:,1]>=y_min]   
-        pcd = pcd[pcd[:,1]<=y_max]
-        pcd = pcd[pcd[:,2]>=z_min]   
-        pcd = pcd[pcd[:,2]<=z_max]        
+            pcd = self.pcd2np(pcd)           
+        if not inclusive: ## Returns pointcloud outside of the limits provided 
+            x0, x1 = pcd[pcd[:,0]<x_min],  pcd[pcd[:,0]>x_max]
+            y0, y1 = pcd[pcd[:,1]<y_min], pcd[pcd[:,1]>y_max]   
+            z0, z1 = pcd[pcd[:,2]<z_min] , pcd[pcd[:,2]>z_max]
+            pcd = np.vstack([x0,x1,y0,y1,z0,z1])
+        else: ## Returns pointcloud within the given limits
+            pcd = pcd[pcd[:,0]>=x_min]
+            pcd = pcd[pcd[:,0]<=x_max]
+            pcd = pcd[pcd[:,1]>=y_min]   
+            pcd = pcd[pcd[:,1]<=y_max]
+            pcd = pcd[pcd[:,2]>=z_min]   
+            pcd = pcd[pcd[:,2]<=z_max]            
         return pcd
-
-
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
