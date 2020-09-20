@@ -38,7 +38,7 @@ class Odometry():
         self.translation = np.zeros((3,1))
         self.trajectory_history = np.array([]).reshape(-1,3)
         self.pointcloud_history = np.array([]).reshape(-1,3)
-        self.pointcloud_trajectory_history = np.zeros((1,3))
+        self.pointcloud_trajectory_history = np.zeros((2,3))
         self.flag = 0
         
     def forward(self, image_current):

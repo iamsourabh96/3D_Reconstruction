@@ -13,13 +13,11 @@ import pcd
 import matplotlib.pyplot as plt
 from line_mesh import LineMesh
 
+pcd = pcd.PCD()
+mv = multiview.MultiView()
+
 class Visualize():
-    
-    def __init__(self):
-        self.mv = multiview.MultiView()
-        self.pcd = pcd.PCD()
-    
-    
+        
     def birds_eye_view(self,trajectory_history, path="./",thickness=3,show=False):
         trajectory = (trajectory_history[:,0]*3).reshape(-1,1)
         trajectory = np.hstack([trajectory, (trajectory_history[:,2]*3).reshape(-1,1)])
@@ -40,35 +38,16 @@ class Visualize():
             plt.show()
             # plt.pause(0.1)
             return
-        cv2.imwrite(os.path.join(path,"trajectory.jpg"), trajectory_plot)
+        cv2.imwrite(os.path.join(path,"trajectory.jpg"), trajectory_plot)        
         
-        
-    def traj_3d(self,points,color=[1,0,0]):
-        lines=self.generate_lines(points)
-        colors = [color for i in range(len(lines))]
-        line_mesh = LineMesh(points, lines, colors, radius=0.1)
-        line_mesh_geoms = line_mesh.cylinder_segments
-        return line_mesh_geoms 
-    
-    def generate_lines(self,points):
+    def pointcloud_trajectory(self,trajectory, pointcloud=[], color=[1,0,0]):
         lines = []
-        for x in range(len(points)-1):
+        for x in range(len(trajectory)-1):
             lines.append([x,x+1])
-        return lines
-            
-        
-        
-        
-        
+        colors = [color for i in range(len(lines))]
+        line_mesh = LineMesh(trajectory, lines, colors, radius=0.1)
+        line_mesh_geoms = line_mesh.cylinder_segments
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        pointcloud+=line_mesh_geoms
+        pcd.viz(pointcloud)
+        return line_mesh_geoms 

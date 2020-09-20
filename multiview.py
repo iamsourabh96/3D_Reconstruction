@@ -52,16 +52,34 @@ class MultiView():
         transformed_data = np.dot(transformation, data.T).T
         transformed_data = self.euclidian(transformed_data)
         return transformed_data       
-    
+        
     def vector_magnitude(self,vec):
-        return np.sqrt(np.sum(vec*vec))
+        return np.sqrt(np.sum(vec*vec))    
     
     def get_proj_matrix(self,K,R=np.eye(3),t=np.zeros([3,1])): ## P = KR[I3 - X0]
         KR = np.dot(K,R)
         X0 = np.dot(KR, t)
-        return np.hstack([KR, X0])
+        return np.hstack([KR, X0])    
     
     def triangulate(self,points1, points2, P1, P2):
         pointclouds = cv2.triangulatePoints(P1, P2, points1.T, points2.T).T
         pointclouds = self.euclidian(pointclouds)
         return pointclouds
+    
+    def rotate_x(self,vector,theta,degrees=False):       ## Rotates 3-D vector around x-axis
+        if degrees:
+            theta*=np.pi/180
+        R = np.array([[1,0,0],[0,np.cos(theta),-np.sin(theta)],[0, np.sin(theta), np.cos(theta)]])
+        return np.dot(R,vector.T).T
+        
+    def rotate_y(self,vector,theta,degrees=False):       ## Rotates 3-D vector around y-axis
+        if degrees:
+            theta*=np.pi/180
+        R = np.array([[np.cos(theta),0,np.sin(theta)],[0,1,0],[-np.sin(theta), 0, np.cos(theta)]])
+        return np.dot(R,vector.T).T
+    
+    def rotate_z(self,vector,theta,degrees=False):       ## Rotates 3-D vector around z-axis
+        if degrees:
+            theta*=np.pi/180
+        R = np.array([[np.cos(theta), -np.sin(theta),0],[np.sin(theta), np.cos(theta),0],[0,0,1]])
+        return np.dot(R,vector.T).T
