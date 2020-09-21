@@ -14,8 +14,6 @@ b. Using Optical flow to track features to subsequent frames.
 
 The tracking features approach is computationally faster. Tracked features can be lost over the subsequent frames and will have to be reintiallized once they fall below a certain specified threshold. In my approach the features are reinitialized if the number of key points fall below 1500.
 
-If all the point correspondences were perfect, then we would have need only five feature correspondences between two successive frames to estimate motion accurately. However, the feature tracking algorithms are not perfect, and therefore we have several erroneous correspondence. A standard technique of handling outliers when doing model estimation is RANSAC
-
 
 ## Computing Essesntial Matrix
 
