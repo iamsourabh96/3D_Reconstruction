@@ -29,7 +29,7 @@ The relative orientation obtained for the susequent frames is then stacked toget
 
 ## Trajectory computed on KITTI dataset
 <p align="center"> 
-<img src="https://user-images.githubusercontent.com/49958651/93733404-370c1080-fba3-11ea-8b80-02dbde98ae35.gif">
+<img src="(https://user-images.githubusercontent.com/49958651/93822703-9d8a4080-fc2e-11ea-9d3d-ae3743b49a68.gif">
 </p>
 
 ## Triangulation
