@@ -8,8 +8,8 @@ A simple monocular visual odometry implementation with 3 components:
 ## Feature Detection and Tracking
 
 My approach uses SIFT feature detectors but this can be easily swapped with other feature detectors like SURF, ORB or FAST corner detector.
-The current implementation has two implementations of feature tracking: 
-a. Detecting features on every subsequent frames and obtaining correspondences.
+The current implementation has two approaches to feature tracking:   
+a. Detecting features on every subsequent frames and obtaining correspondences.  
 b. Using Optical flow to track features to subsequent frames.
 
 The tracking features approach is computationally faster. Tracked features can be lost over the subsequent frames and will have to be reintiallized once they fall below a certain specified threshold. In my approach the features are reinitialized if the number of key points fall below 1500.
