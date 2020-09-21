@@ -1,6 +1,7 @@
 import numpy as np
 import open3d as o3d
 import copy
+import os
 
 class PCD():   
     
@@ -25,7 +26,7 @@ class PCD():
         -------
         None.
         '''
-        mesh_frame = o3d.geometry.TriangleMesh.create_coordinate_frame(size=3, origin=[0, 0, 0])
+        mesh_frame = o3d.geometry.TriangleMesh.create_coordinate_frame(size=2, origin=[0, 0, 0])
         for x in range(len(data)):    
             if str(type(data[x])) == "<class 'numpy.ndarray'>" :
                  data[x] = self.np2pcd(data[x])                 
@@ -74,6 +75,18 @@ class PCD():
             z0, z1 = pcd[pcd[:,2]<z_min] , pcd[pcd[:,2]>z_max]
             pcd = np.vstack([x0,x1,y0,y1,z0,z1])
         else: ## Returns pointcloud within the given limits
+        
+            # p1 = np.array([x_min,y_min,z_min])
+            # p2 = np.array([x_min,y_max,z_min])
+            # p3 = np.array([x_min,y_max,z_max])
+            # p4 = np.array([x_min,y_min,z_max])
+            # p5 = np.array([x_max,y_min,z_min])
+            # p6 = np.array([x_max,y_max,z_min])
+            # p7 = np.array([x_max,y_max,z_max])
+            # p8 = np.array([x_max,y_min,z_max])        
+            # box = np.vstack([p1,p2,p3,p4,p5,p6,p7,p8]).reshape(-1,3)
+            # pcd = np.vstack([pcd, box]) 
+            
             pcd = pcd[pcd[:,0]>=x_min]
             pcd = pcd[pcd[:,0]<=x_max]
             pcd = pcd[pcd[:,1]>=y_min]   
@@ -81,3 +94,18 @@ class PCD():
             pcd = pcd[pcd[:,2]>=z_min]   
             pcd = pcd[pcd[:,2]<=z_max]            
         return pcd
+    
+    def create_box(self, x_limits, y_limits, z_limits):
+        x_min, x_max = x_limits
+        y_min, y_max = y_limits
+        z_min, z_max = z_limits 
+        p1 = np.array([x_min,y_min,z_min])
+        p2 = np.array([x_min,y_max,z_min])
+        p3 = np.array([x_min,y_max,z_max])
+        p4 = np.array([x_min,y_min,z_max])
+        p5 = np.array([x_max,y_min,z_min])
+        p6 = np.array([x_max,y_max,z_min])
+        p7 = np.array([x_max,y_max,z_max])
+        p8 = np.array([x_max,y_min,z_max])        
+        box = np.vstack([p1,p2,p3,p4,p5,p6,p7,p8]).reshape(-1,3)
+        return box

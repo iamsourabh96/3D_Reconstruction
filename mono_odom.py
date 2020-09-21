@@ -27,15 +27,26 @@ pcd = pcd.PCD()
 path = "./data/data"
 K = np.loadtxt("./camera_matrix.txt")
 
-frame_old = cv2.imread(os.path.join(path, "000000.png"))
+frame_old = cv2.imread(os.path.join(path, "000070.png"))
 odom = odometry.Odometry(frame_old, K, track=True)
 
 # for x in range(1,len(glob.glob(os.path.join(path,"*png")))):
-for x in range(70,240):
+for x in range(71,240):
     print(x)
     frame_new = cv2.imread(os.path.join(path, str(x).zfill(6)+".png"))
-    odom.monocular_odometry(frame_new)        
-    viz.birds_eye_view(odom.trajectory_history,show=True)    
-    viz.pointcloud_trajectory(trajectory=odom.pointcloud_trajectory_history, pointcloud=[odom.pointcloud_history])
+    odom.monocular_odometry(frame_new)    
+    # pointcloud = odom.get_monocular_pointcloud(frame_new)       
+    # odom.forward(frame_new)
+    # pointcloud = odom.pointcloud_history
+    # trajectory = odom.pointcloud_trajectory_history
+    # pointcloud = viz.pointcloud_trajectory(trajectory, pointcloud)    
+    # rot_x, rot_y = 950, 1200
+    # trans_x, trans_y = 0, 0
+    # scale = -15
+    # save_path = os.path.join("./pointclouds", "overview"+str(x).zfill(6)+".jpg")
+    # viz.save_pointcloud(pointcloud, save_path, rot_x, rot_y, trans_x, trans_y, scale, save=True)
+    # viz.birds_eye_view(odom.trajectory_history,show=True)    
+trajectory = viz.pointcloud_trajectory(odom.pointcloud_trajectory_history)
+pcd.viz([odom.pointcloud_history]+trajectory, axis=True)
 
     

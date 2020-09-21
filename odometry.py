@@ -38,11 +38,13 @@ class Odometry():
         self.translation = np.zeros((3,1))
         self.trajectory_history = np.array([]).reshape(-1,3)
         self.pointcloud_history = np.array([]).reshape(-1,3)
-        self.pointcloud_trajectory_history = np.zeros((2,3))
+        self.pointcloud_trajectory_history = np.zeros((1,3))
         self.flag = 0
+
         
     def forward(self, image_current):
         self.image_prior = image_current
+        self.flag = 0
         
     
     def monocular_odometry(self, image_current, num_points=10000):
@@ -60,7 +62,7 @@ class Odometry():
         self.monocular_pointcloud(self.kpts_prior[:num_points], self.kpts_current[:num_points], proj_mat1, proj_mat2)
         self.pointcloud_trajectory(skip_frames=60,curve=0.11) ## Creates trajectory with minimal points (vertices) 
         self.forward(image_current)  ## Proceeds to next frame (Assuming next frame will be provided for next function call)
-        
+
         
     def monocular(self,image_current, heuristic_odom=True):
         R, t = self.get_relative_orientation(image_current)        
@@ -98,11 +100,12 @@ class Odometry():
         return self.mv.get_proj_matrix(K), self.mv.get_proj_matrix(K,R,t)
     
     
-    def get_monocular_pointcloud(self, image_current): ## Gets monocular pointcloud provided an image
+    def get_monocular_pointcloud(self, image_current, num_points=1000): ## Gets monocular pointcloud provided an image
         points1, points2 = self.get_keypoints(image_current)
         R, t = self.get_relative_orientation(image_current)
         proj_mat1, proj_mat2 = self.get_monocular_projection_matrices(self.K,R,t)        
-        pointcloud = self.mv.triangulate(points1,points2,proj_mat1,proj_mat2)
+        pointcloud = self.mv.triangulate(points1[:num_points],points2[:num_points],proj_mat1,proj_mat2)
+        pointcloud = self.pcd.filtr(pointcloud, x_limit=(-25,25),y_limit=(-10,5),z_limit=(0,40), inclusive=True) ## Include only nearby values in pointcloud
         return pointcloud
    
     
@@ -115,7 +118,8 @@ class Odometry():
         
 
     def pointcloud_trajectory(self,skip_frames=5, curve=0.25): ## Workaround to get LineMesh object running (Cannot display large number of LineMesh objects)
+        translation = self.translation*(np.array([-1,1,-1]).reshape(3,1)) 
         if abs(self.t[0])>curve: ## Adds a vertex if deviation in the horizontal axis is detected (Curve values should be between 0 and 1)
-            self.pointcloud_trajectory_history = np.vstack([self.pointcloud_trajectory_history, (self.translation*(np.array([-1,1,-1]).reshape(3,1))).T])
+            self.pointcloud_trajectory_history = np.vstack([self.pointcloud_trajectory_history, translation.T])
         elif not len(self.trajectory_history)%skip_frames:  ## Add a vertex after 'n' frames (specified by skip frames parameter)
-            self.pointcloud_trajectory_history = np.vstack([self.pointcloud_trajectory_history, (self.translation*(np.array([-1,1,-1]).reshape(3,1))).T])
+            self.pointcloud_trajectory_history = np.vstack([self.pointcloud_trajectory_history, translation.T])

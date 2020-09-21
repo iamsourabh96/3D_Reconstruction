@@ -2,3 +2,6 @@ __pycache__/
 data
 test*.py
 *jpg
+*json
+video*
+*mp4
