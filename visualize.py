@@ -12,6 +12,8 @@ import multiview
 import pcd
 import matplotlib.pyplot as plt
 from line_mesh import LineMesh
+import open3d as o3d
+
 
 pcd = pcd.PCD()
 mv = multiview.MultiView()
@@ -49,5 +51,30 @@ class Visualize():
         line_mesh_geoms = line_mesh.cylinder_segments
 
         pointcloud+=line_mesh_geoms
-        pcd.viz(pointcloud)
-        return line_mesh_geoms 
+        # pcd.viz(pointcloud, axis=True)
+        return line_mesh_geoms
+    
+    
+    def save_pointcloud(self, pointclouds, save_path, rot_x, rot_y, trans_x, trans_y, scale, save=False):
+        mesh_frame = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.5, origin=[0, 0, 0])
+        self.vis = o3d.visualization.Visualizer()
+        self.vis.create_window()
+        for k in range(len(pointclouds)):
+            # pointclouds[k] = pcd.np2pcd(pointclouds[k])
+            self.vis.add_geometry(pointclouds[k])
+        # self.vis.add_geometry(mesh_frame)
+        self.vis.get_render_option().load_from_json("./RenderOption_2020-09-20-22-20-37.json")
+        
+        self.view_control_pointclouds(rot_x, rot_y, trans_x, trans_y, scale)
+        # self.vis.run()        ## To visualize
+        self.vis.poll_events()
+        self.vis.update_renderer()
+        if save:
+            self.vis.capture_screen_image(save_path)
+        self.vis.destroy_window()
+        
+    def view_control_pointclouds(self, rot_x, rot_y, trans_x, trans_y, scale):
+        ctr = self.vis.get_view_control()
+        ctr.rotate(rot_x, rot_y, xo=0.0, yo=0.0)        
+        ctr.translate(trans_x,trans_y)
+        ctr.scale(scale)
