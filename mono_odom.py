@@ -27,11 +27,11 @@ pcd = pcd.PCD()
 path = "./data/data"
 K = np.loadtxt("./camera_matrix.txt")
 
-frame_old = cv2.imread(os.path.join(path, "000070.png"))
+frame_old = cv2.imread(os.path.join(path, "000069.png"))
 odom = odometry.Odometry(frame_old, K, track=True)
 
 # for x in range(1,len(glob.glob(os.path.join(path,"*png")))):
-for x in range(71,240):
+for x in range(70,240):
     print(x)
     frame_new = cv2.imread(os.path.join(path, str(x).zfill(6)+".png"))
     odom.monocular_odometry(frame_new)    

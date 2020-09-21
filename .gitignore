@@ -5,3 +5,5 @@ test*.py
 *json
 video*
 *mp4
+vis*
+*mesh*
