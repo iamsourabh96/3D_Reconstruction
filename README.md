@@ -32,4 +32,11 @@ The relative orientation obtained for the susequent frames is then stacked toget
 <img src="https://user-images.githubusercontent.com/49958651/93733404-370c1080-fba3-11ea-8b80-02dbde98ae35.gif">
 </p>
 
-![ezgif com-optimize (1)](https://user-images.githubusercontent.com/49958651/93733010-a84ac400-fba1-11ea-9ecf-f733f601db0d.gif)
+## Triangulation
+
+With known correspondences between subsequent frames and their corresponding projection matrices, with a simple geometric approach the features are then triangulated to get feature points in the 3D world. In case of monocular visual odometry, the 3D coordinates can only be estimated upto a scale factor (absolute orientaion is not possible without some control points in 3D world). 
+
+## Pointclouds with Trajectory plot
+<p align="center"> 
+<img src="https://user-images.githubusercontent.com/49958651/93733010-a84ac400-fba1-11ea-9ecf-f733f601db0d.gif">
+</p>
