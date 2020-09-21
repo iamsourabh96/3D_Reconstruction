@@ -38,5 +38,5 @@ With known correspondences between subsequent frames and their corresponding pro
 
 ## Pointclouds with Trajectory plot
 <p align="center"> 
-<img src="https://user-images.githubusercontent.com/49958651/93733010-a84ac400-fba1-11ea-9ecf-f733f601db0d.gif">
+<img src="https://user-images.githubusercontent.com/49958651/93821649-d6c1b100-fc2c-11ea-9116-a3dc127fa358.gif">
 </p>
