@@ -1,8 +1,8 @@
 # Monocular Visual Odometry
 A simple monocular visual odometry implementation with 3 components: 
 1. Feature Detection.
-2. Obtaining Essential Matrix from point correspondences.
-3. Estimating the Relative Orientation from essential matrix.
+2. Computing Essential Matrix.
+3. Estimating Relative Orientation.
 
 
 ## Feature Detection and Tracking
