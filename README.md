@@ -13,7 +13,7 @@ The current implementation has two approaches to feature tracking:
 a. Detecting features on every subsequent frames and obtaining correspondences.  
 b. Using Optical flow to track features to subsequent frames.
 
-The tracking features approach is computationally faster. Tracked features can be lost over the subsequent frames and will have to be reintiallized once they fall below a certain specified threshold. In the current implementaation the features are reinitialized if the number of key points fall below 1500.
+The tracking features approach is computationally faster. Tracked features can be lost over the subsequent frames and will have to be reintiallized once they fall below a certain specified threshold. In the current implementation the features are reinitialized if the number of key points fall below 1500.
 
 
 ## Computing Essesntial Matrix from point correspondences
